@@ -9,6 +9,14 @@ class CinemaController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender(true);
     }
 
+    protected function response($status, $body)
+    {
+        $response = $this->getResponse();
+        $response->setHeader('Content-Type', 'application/json; charset=UTF-8', true);
+        $response->setBody($body);
+        $response->setHttpResponseCode($status);
+    }
+
     public function scheduleAction()
     {
         $request = $this->getRequest();
@@ -17,7 +25,7 @@ class CinemaController extends Zend_Controller_Action
         if($request->isGet()) {
             $cinemas = new Application_Model_DbTable_Sessions();
             $cinema = $cinemas->getScheduleByCinemaName($cinema_name, $hall);
-            $result = Zend_Json::encode($cinema);
+            $result = Zend_Json::encode($cinema, JSON_UNESCAPED_UNICODE);
             $this->response(200, $result);
         }
         else
@@ -40,12 +48,6 @@ class CinemaController extends Zend_Controller_Action
         {
             $this->response(405, "Метод не поддерживается");
         }
-    }
-
-    protected function response($status, $body)
-    {
-        $this->getResponse()->setBody($body);
-        $this->getResponse()->setHttpResponseCode($status);
     }
 
 }

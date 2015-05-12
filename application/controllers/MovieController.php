@@ -9,6 +9,14 @@ class MovieController extends Zend_Controller_Action
         $this->_helper->viewRenderer->setNoRender(true);
     }
 
+    protected function response($status, $body)
+    {
+        $response = $this->getResponse();
+        $response->setBody($body);
+        $response->setHeader('Content-Type', 'application/json; charset=UTF-8', true);
+        $response->setHttpResponseCode($status);
+    }
+
     public function scheduleAction()
     {
         $request = $this->getRequest();
@@ -40,14 +48,6 @@ class MovieController extends Zend_Controller_Action
         {
             $this->response(405, "Метод не поддерживается");
         }
-    }
-
-    protected function response($status, $body)
-    {
-        $response = $this->getResponse();
-        $response->setBody($body);
-        $response->setHeader('Content-Type', 'Content-Type: application/json; charset=UTF-8', true);
-        $response->setHttpResponseCode($status);
     }
 
 }
