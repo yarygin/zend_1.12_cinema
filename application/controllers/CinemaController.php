@@ -14,19 +14,38 @@ class CinemaController extends Zend_Controller_Action
         $request = $this->getRequest();
         $cinema_name = $request->getParam('cinema_name');
         $hall = $request->getParam('hall');
-        if($request->isPost()) {
-            $this->getResponse()->setBody("POST".$cinema_name.$hall);
+        if($request->isGet()) {
+            $cinemas = new Application_Model_DbTable_Sessions();
+            $cinema = $cinemas->getScheduleByCinemaName($cinema_name, $hall);
+            $result = Zend_Json::encode($cinema);
+            $this->response(200, $result);
         }
-        else {
-                // Создаём объект нашей модели
+        else
+        {
+            $this->response(405, "Метод не поддерживается");
+        }
+    }
+
+    public function infoAction()
+    {
+        $request = $this->getRequest();
+        $cinema_name = $request->getParam('cinema_name');
+        if($request->isGet()) {
             $cinemas = new Application_Model_DbTable_Cinema();
             $cinema = $cinemas->getCinemaByName($cinema_name);
-            // $result = json_encode($all_movies);
             $result = Zend_Json::encode($cinema);
-            // $this->getResponse()->setBody("GET".$cinema_name.$hall.print_r($all_movies, true));
-            $this->getResponse()->setBody($result);
+            $this->response(200, $result);
         }
-        $this->getResponse()->setHttpResponseCode(200);
+        else
+        {
+            $this->response(405, "Метод не поддерживается");
+        }
+    }
+
+    protected function response($status, $body)
+    {
+        $this->getResponse()->setBody($body);
+        $this->getResponse()->setHttpResponseCode($status);
     }
 
 }

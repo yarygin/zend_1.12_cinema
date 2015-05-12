@@ -15,6 +15,9 @@
           <actionMethod actionName="schedule"/>
         </controllerFile>
         <controllerFile controllerName="Movie">
+          <actionMethod actionName="schedule"/>
+        </controllerFile>
+        <controllerFile controllerName="Session">
           <actionMethod actionName="index"/>
         </controllerFile>
       </controllersDirectory>
@@ -24,6 +27,7 @@
         <dbTableDirectory>
           <dbTableFile dbTableName="Movie"/>
           <dbTableFile dbTableName="Cinema"/>
+          <dbTableFile dbTableName="Sessions"/>
         </dbTableDirectory>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
@@ -46,6 +50,9 @@
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Movie">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Session">
             <viewScriptFile forActionName="index"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>

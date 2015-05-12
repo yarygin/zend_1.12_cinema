@@ -1,6 +1,13 @@
 <?php
 
 $routes = Array(
+    'cinema_info'=> new Zend_Controller_Router_Route(
+        '/api/cinema/:cinema_name',
+        array(
+            'controller' => 'cinema',
+            'action'     => 'info'
+        ) 
+    ),
     'cinema_schedule'=> new Zend_Controller_Router_Route(
         '/api/cinema/:cinema_name/schedule',
         array(
@@ -8,18 +15,25 @@ $routes = Array(
             'action'     => 'schedule'
         ) 
     ),
-    'movie_shcedule'=> new Zend_Controller_Router_Route(
-        '/api/movie/:movie_name/schedule',
+    'movie_info'=> new Zend_Controller_Router_Route(
+        '/api/movie/:movie_title',
         array(
-            'controller' => 'cinema',
+            'controller' => 'movie',
+            'action'     => 'info'
+        ) 
+    ),
+    'movie_shcedule'=> new Zend_Controller_Router_Route(
+        '/api/movie/:movie_title/schedule',
+        array(
+            'controller' => 'movie',
             'action'     => 'schedule'
         ) 
     ),
-    'sessions'=> new Zend_Controller_Router_Route(
+    'session_places'=> new Zend_Controller_Router_Route(
         '/api/session/:session_id/places',
         array(
-            'controller' => 'cinema',
-            'action'     => 'schedule'
+            'controller' => 'session',
+            'action'     => 'places'
         ) 
     ),
     'tickets_buy'=> new Zend_Controller_Router_Route(

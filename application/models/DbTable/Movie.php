@@ -5,21 +5,12 @@ class Application_Model_DbTable_Movie extends Zend_Db_Table_Abstract
 
     protected $_name = 'movie';
 
-    // Метод для получения записи по id
-    public function getMovie($id)
+    public function getMovieByTitle($title)
     {
-        // Получаем id как параметр
-        $id = (int)$id;
-
-        // Используем метод fetchRow для получения записи из базы.
-        // В скобках указываем условие выборки (привычное для вас where)
-        $row = $this->fetchRow('id = ' . $id);
-
-        // Если результат пустой, выкидываем исключение
+        $row = $this->fetchRow('title = "' . $title . '"');
         if(!$row) {
-            throw new Exception("Нет записи с id - $id");
+            throw new Exception("Нет записи с title - $title");
         }
-        // Возвращаем результат, упакованный в массив
         return $row->toArray();
     }
     
