@@ -32,16 +32,32 @@ class Application_Model_DbTable_Ticket extends Zend_Db_Table_Abstract
         $session_res = new Application_Model_DbTable_Session();
         $session = $session_res->getSession($id_session);
 
-        // SELECT * FROM place as p
+        $session_tickets = $this->select()
+                     ->from(array('t' => 'ticket'))
+                     ->join(array('s' => 'session'),
+                            's.id = t.id_session')
+                     ->join(array('p' => 'place'),
+                            'p.row_number = t.row_number AND p.place_number = t.place_number AND s.id_hall = p.id_hall')
+                     ->where('s.id = ?', $id_session );
+
+        // TODO: Отладить запрос
+        $select = $this->select()
+                        ->from(array('p' => 'place'))
+                        ->join(array('s' => 'session'),
+                            'p.id_hall = s.id_hall')
+                        ->where('s.id = ?', $id_session )
+                        ->where('p.id NOT IN (?)',((string)$session_tickets) );
+
+        // SELECT p.* FROM place as p
         // INNER JOIN `session` as s on p.id_hall = s.id_hall
         // WHERE s.id = 12 AND p.id NOT IN (
         //     SELECT p.id FROM ticket as t 
         //     INNER JOIN `session` as s on s.id = t.id_session
         //     INNER JOIN place as p on p.row_number = t.row_number AND p.place_number = t.place_number AND s.id_hall = p.id_hall
         //     WHERE s.id = 12);
-        
-        // $select->setIntegrityCheck(false);
-        // return $this->fetchAll($select);
+
+        $select->setIntegrityCheck(false);
+        return $this->fetchAll($select);
     }
 
 }
