@@ -13,12 +13,14 @@
         <controllerFile controllerName="Error"/>
         <controllerFile controllerName="Cinema">
           <actionMethod actionName="schedule"/>
+          <actionMethod actionName="info"/>
         </controllerFile>
         <controllerFile controllerName="Movie">
           <actionMethod actionName="schedule"/>
+          <actionMethod actionName="info"/>
         </controllerFile>
         <controllerFile controllerName="Session">
-          <actionMethod actionName="index"/>
+          <actionMethod actionName="places"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
@@ -28,6 +30,7 @@
           <dbTableFile dbTableName="Movie"/>
           <dbTableFile dbTableName="Cinema"/>
           <dbTableFile dbTableName="Sessions"/>
+          <dbTableFile dbTableName="Ticket"/>
         </dbTableDirectory>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>

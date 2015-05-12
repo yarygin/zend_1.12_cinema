@@ -22,7 +22,7 @@ class MovieController extends Zend_Controller_Action
         $request = $this->getRequest();
         $movie_title = $request->getParam('movie_title');
         if($request->isGet()) {
-            $movies = new Application_Model_DbTable_Sessions();
+            $movies = new Application_Model_DbTable_Session();
             $movie = $movies->getScheduleByMovieTitle($movie_title);
             $result = Zend_Json::encode($movie);
             $this->getResponse()->setBody($result);
