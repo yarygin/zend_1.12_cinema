@@ -21,6 +21,8 @@
         </controllerFile>
         <controllerFile controllerName="Session">
           <actionMethod actionName="places"/>
+          <actionMethod actionName="buy"/>
+          <actionMethod actionName="reject"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
