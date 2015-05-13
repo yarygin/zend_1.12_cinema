@@ -22,7 +22,7 @@ class CinemaController extends Zend_Controller_Action
         $request = $this->getRequest();
         $cinema_name = $request->getParam('cinema_name');
         $hall = $request->getParam('hall');
-        if($request->isGet()) {
+        if(in_array($request->getMethod(), $request->getParam('allowed'))) {
             $cinemas = new Application_Model_DbTable_Session();
             $cinema = $cinemas->getScheduleByCinemaName($cinema_name, $hall);
             $result = Zend_Json::encode($cinema, JSON_UNESCAPED_UNICODE);
@@ -38,7 +38,7 @@ class CinemaController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $cinema_name = $request->getParam('cinema_name');
-        if($request->isGet()) {
+        if(in_array($request->getMethod(), $request->getParam('allowed'))) {
             $cinemas = new Application_Model_DbTable_Cinema();
             $cinema = $cinemas->getCinemaByName($cinema_name);
             $result = Zend_Json::encode($cinema);

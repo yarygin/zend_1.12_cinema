@@ -21,7 +21,7 @@ class SessionController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $session_id = $request->getParam('session_id');
-        if($request->isGet()) {
+        if(in_array($request->getMethod(), $request->getParam('allowed'))) {
             $tickets_res = new Application_Model_DbTable_Ticket();
             $tickets = $tickets_res->getAvailableTickets($session_id);
             $result = Zend_Json::encode($tickets);

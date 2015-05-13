@@ -21,7 +21,7 @@ class MovieController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $movie_title = $request->getParam('movie_title');
-        if($request->isGet()) {
+        if(in_array($request->getMethod(), $request->getParam('allowed'))) {
             $movies = new Application_Model_DbTable_Session();
             $movie = $movies->getScheduleByMovieTitle($movie_title);
             $result = Zend_Json::encode($movie);
@@ -38,7 +38,7 @@ class MovieController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $movie_title = $request->getParam('movie_title');
-        if($request->isGet()) {
+        if(in_array($request->getMethod(), $request->getParam('allowed'))) {
             $movies = new Application_Model_DbTable_Movie();
             $movie = $movies->getMovieByTitle($movie_title);
             $result = Zend_Json::encode($movie);
