@@ -29,24 +29,6 @@ class Application_Model_DbTable_Ticket extends Zend_Db_Table_Abstract
     }
 
     public function getAvailableTickets($id_session) {
-        $session_res = new Application_Model_DbTable_Session();
-        $session = $session_res->getSession($id_session);
-
-        $session_tickets = $this->select()
-                     ->from(array('t' => 'ticket'))
-                     ->join(array('s' => 'session'),
-                            's.id = t.id_session')
-                     ->join(array('p' => 'place'),
-                            'p.row_number = t.row_number AND p.place_number = t.place_number AND s.id_hall = p.id_hall')
-                     ->where('s.id = ?', $id_session );
-
-        // TODO: Отладить запрос
-        $select = $this->select()
-                        ->from(array('p' => 'place'))
-                        ->join(array('s' => 'session'),
-                            'p.id_hall = s.id_hall')
-                        ->where('s.id = ?', $id_session )
-                        ->where('p.id NOT IN (?)',((string)$session_tickets) );
 
         // SELECT p.* FROM place as p
         // INNER JOIN `session` as s on p.id_hall = s.id_hall
@@ -55,8 +37,30 @@ class Application_Model_DbTable_Ticket extends Zend_Db_Table_Abstract
         //     INNER JOIN `session` as s on s.id = t.id_session
         //     INNER JOIN place as p on p.row_number = t.row_number AND p.place_number = t.place_number AND s.id_hall = p.id_hall
         //     WHERE s.id = 12);
+        
+        $session_res = new Application_Model_DbTable_Session();
+        $session = $session_res->getSession($id_session);
 
-        $select->setIntegrityCheck(false);
+        $session_tickets = $this->select()
+                     ->from(array('t' => 'ticket'), 
+                            array())
+                     ->join(array('s' => 'session'),
+                            's.id = t.id_session',array())
+                     ->join(array('p' => 'place'),
+                            'p.row_number = t.row_number AND p.place_number = t.place_number AND s.id_hall = p.id_hall',
+                            array('p.id'))
+                     ->where('s.id = ?', $id_session )
+                     ->setIntegrityCheck(false);
+
+        // TODO: Отладить запрос    
+        $select = $this->select()
+                        ->from(array('p' => 'place'))
+                        ->join(array('s' => 'session'),
+                            'p.id_hall = s.id_hall', array())
+                        ->where('s.id = ?', $id_session )
+                        ->where('p.id NOT IN (?)',new Zend_Db_Expr($session_tickets) )
+                        ->setIntegrityCheck(false);
+
         return $this->fetchAll($select);
     }
 
