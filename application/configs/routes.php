@@ -45,7 +45,15 @@ $routes = Array(
         '/api/tickets/buy',
         array(
             'controller' => 'session',
-            'action'     => 'places',
+            'action'     => 'buy',
+            'allowed'    => array('POST')
+        ) 
+    ),
+    'tickets_reject'=> new Zend_Controller_Router_Route(
+        '/api/tickets/reject',
+        array(
+            'controller' => 'session',
+            'action'     => 'reject',
             'allowed'    => array('POST')
         ) 
     ),
