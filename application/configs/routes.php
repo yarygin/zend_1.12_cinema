@@ -6,7 +6,7 @@ $routes = Array(
         array(
             'controller' => 'cinema',
             'action'     => 'info',
-            'allowed'    => array('GET')
+            'allowed'    =>  array('GET')
         ) 
     ),
     'cinema_schedule'=> new Zend_Controller_Router_Route(
@@ -14,7 +14,7 @@ $routes = Array(
         array(
             'controller' => 'cinema',
             'action'     => 'schedule',
-            'allowed'    => array('GET')
+            'allowed'    =>  array('GET')
         ) 
     ),
     'movie_info'=> new Zend_Controller_Router_Route(
@@ -22,7 +22,7 @@ $routes = Array(
         array(
             'controller' => 'movie',
             'action'     => 'info',
-            'allowed'    => array('GET')
+            'allowed'    =>  array('GET')
         ) 
     ),
     'movie_shcedule'=> new Zend_Controller_Router_Route(
@@ -30,7 +30,7 @@ $routes = Array(
         array(
             'controller' => 'movie',
             'action'     => 'schedule',
-            'allowed'    => array('GET')
+            'allowed'    =>  array('GET')
         ) 
     ),
     'session_places'=> new Zend_Controller_Router_Route(
@@ -38,7 +38,7 @@ $routes = Array(
         array(
             'controller' => 'session',
             'action'     => 'places',
-            'allowed'    => array('GET')
+            'allowed'    =>  array('GET')
         ) 
     ),
     'tickets_buy'=> new Zend_Controller_Router_Route(
@@ -46,7 +46,7 @@ $routes = Array(
         array(
             'controller' => 'session',
             'action'     => 'buy',
-            'allowed'    => array('POST')
+            'allowed'    =>  array('POST')
         ) 
     ),
     'tickets_reject'=> new Zend_Controller_Router_Route(
@@ -54,7 +54,7 @@ $routes = Array(
         array(
             'controller' => 'session',
             'action'     => 'reject',
-            'allowed'    => array('POST')
+            'allowed'    =>  array('POST')
         ) 
     ),
 );
