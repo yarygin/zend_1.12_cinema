@@ -5,19 +5,6 @@ class Application_Model_DbTable_Ticket extends Zend_Db_Table_Abstract
 
     protected $_name = 'ticket';
 
-    public function getTickets($id_session)
-    {
-        $id_session = (id)$id_session;
-        $select = $this->select()
-                     ->from(array('t' => 'ticket'))
-                     ->join(array('h' => 'hall_rows'),
-                            't.id_row = h.id')
-                     ->where('t.id_session = ?', $id_session );
-
-        $select->setIntegrityCheck(false);
-        return $this->fetchAll($select);
-    }
-
     public function getTicketByCode($unique_code)
     {
         $row = $this->fetchRow('unique_code = "' . $unique_code . '"');
