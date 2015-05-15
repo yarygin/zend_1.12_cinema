@@ -17,15 +17,27 @@ class SessionController extends Zend_Controller_Action
         $response->setHttpResponseCode($status);
     }
 
+    private function clearString($str)
+    {
+        return strip_tags(htmlspecialchars(mysql_escape_string($str)));
+    }
+
     public function placesAction()
     {
         $request = $this->getRequest();
-        $session_id = $request->getParam('session_id');
         if(in_array($request->getMethod(), $request->getParam('allowed'))) {
-            $tickets_res = new Application_Model_DbTable_Ticket();
-            $tickets = $tickets_res->getAvailableTickets($session_id);
-            $result = Zend_Json::encode($tickets);
-            $this->response(200, $result);
+            $session_id = $request->getParam('session_id');
+            if(isset($session_id))
+            {
+                $tickets_res = new Application_Model_DbTable_Ticket();
+                $tickets = $tickets_res->getAvailableTickets($session_id);
+                $result = Zend_Json::encode($tickets);
+                $this->response(200, $result);
+            }
+            else 
+            {
+                $this->response(400, "Неверные параметры");
+            }
         }
         else
         {
@@ -39,17 +51,24 @@ class SessionController extends Zend_Controller_Action
         $session_id = (int)$request->getPost('session_id', null);
         $row_number = (int)$request->getPost('row_number', null);
         $place_number = (int)$request->getPost('place_number', null);
-        if(in_array($request->getMethod(), $request->getParam('allowed'))) {
+        if(in_array($request->getMethod(), $request->getParam('allowed'))) {    
             $tickets_res = new Application_Model_DbTable_Ticket();
-            if($tickets_res->isAvailable($session_id, $row_number, $place_number))
+            if(!(is_null($session_id) && is_null($row_number) && is_null($place_number)))
             {
-                $unique_code = $tickets_res->buyTicket($session_id, $row_number, $place_number);
-                $result = Zend_Json::encode($unique_code);
-                $this->response(200, $result);
+                if($tickets_res->isAvailable($session_id, $row_number, $place_number))
+                {
+                    $unique_code = $tickets_res->buyTicket($session_id, $row_number, $place_number);
+                    $result = Zend_Json::encode($unique_code);
+                    $this->response(200, $result);
+                }
+                else
+                {
+                    $this->response(400, "Билеты недоступны");
+                }
             }
             else
             {
-                throw new Exception("Error Processing Request", 1);
+                $this->response(400, "Неверные параметры");
             }
         }
         else
@@ -62,18 +81,26 @@ class SessionController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         if(in_array($request->getMethod(), $request->getParam('allowed'))) {
-            $unique_code = $request->getPost('unique_code', null);
-            $tickets_res = new Application_Model_DbTable_Ticket();
-            if($tickets_res->getTicketByCode($unique_code))
+            $unique_code = $this->clearString($request->getPost('unique_code', null));
+            if(!is_null($unique_code))
             {
-                $reject = $tickets_res->rejectTicket($unique_code);
-                $result = Zend_Json::encode($reject);
-                $this->response(200, $result);
+                $tickets_res = new Application_Model_DbTable_Ticket();
+                if($tickets_res->getTicketByCode($unique_code))
+                {
+                    $reject = $tickets_res->rejectTicket($unique_code);
+                    $result = Zend_Json::encode($reject);
+                    $this->response(200, $result);
+                }
+                else
+                {
+                    $this->response(400, "Билеты недоступны");
+                }
             }
             else
             {
-                throw new Exception("Error Processing Request", 1);
+                $this->response(400, "Неверные параметры");
             }
+            
         }
         else
         {

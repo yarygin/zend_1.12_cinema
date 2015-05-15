@@ -26,8 +26,8 @@ class Application_Model_DbTable_Session extends Zend_Db_Table_Abstract
                             's.id_hall = h.id', array('id_cinema', 'h.title'))
                      ->join(array('c' => 'cinema'),
                             'c.id = h.id_cinema', array())
-                     // раскомментить чтобы убрать старые
-                     // ->where('s.start >= NOW()')
+                     // зааскомментить чтобы учитывать старые
+                     ->where('s.start >= NOW()')
                      ->where('c.name = ?', $name );
         if(!is_null($hall)) {
             $select->where('h.title = ?', $hall);

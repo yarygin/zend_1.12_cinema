@@ -7,6 +7,7 @@ class Application_Model_DbTable_Ticket extends Zend_Db_Table_Abstract
 
     public function getTickets($id_session)
     {
+        $id_session = (id)$id_session;
         $select = $this->select()
                      ->from(array('t' => 'ticket'))
                      ->join(array('h' => 'hall_rows'),
